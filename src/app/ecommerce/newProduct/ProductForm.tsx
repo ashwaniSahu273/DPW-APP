@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import ProductInfo from "./ProductInfo";
 import Media from "./Media";
 import Social from "./Social";
@@ -6,58 +7,133 @@ import Pricing from "./Pricing";
 
 function ProductForm() {
   const [currentStep, setCurrentStep] = useState(1);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    control,
+    formState: { errors },
+  } = useForm();
+
+  const [completed, setCompleted] = useState({
+    info: false,
+    media: false,
+    social: false,
+    pricing: false,
+  });
+
+  const onSubmit = (data) => {
+    console.log("Form Data Submitted:", data);
+    // Add your logic here to handle the form submission, e.g., send data to a server
+  };
 
   const handleNext = () => {
-    setCurrentStep(currentStep + 1);
+    if (currentStep == 1) {
+      setCompleted((prevCompleted) => ({ ...prevCompleted, info: true }));
+    } else if (currentStep == 2) {
+      setCompleted((prevCompleted) => ({ ...prevCompleted, media: true }));
+    } else if (currentStep == 3) {
+      setCompleted((prevCompleted) => ({ ...prevCompleted, social: true }));
+    }
+    setCurrentStep((prevStep) => prevStep + 1);
   };
+
+
 
   const handlePrev = () => {
-    setCurrentStep(currentStep - 1);
-  };
+    setCurrentStep((prevStep) => prevStep - 1);
 
+    if (currentStep == 3) {
+      console.log(currentStep);
+      setCompleted((prevCompleted) => ({ ...prevCompleted, social: false }));
+    } else if (currentStep == 2) {
+      setCompleted((prevCompleted) => ({ ...prevCompleted, media: false }));
+    }
+  };
 
   return (
     <div className="flex flex-wrap -mx-3">
       <div className="w-full max-w-full px-3 flex-0">
-        <div className=" mb-12">
+        <div className="mb-12">
           <div className="flex flex-wrap -mx-3">
-            <div className="w-full max-w-full px-3 mx-auto my-12 flex-0 lg:w-8/12">
-              <div className="grid grid-cols-4">
+            <div className="w-full max-w-full px-3 mx-auto my-12  flex flex-col  justify-center items-center lg:w-8/12">
+              <div className="w-3/4  h-1  bg-gray-200  m-3 ">
+                <div
+                  className={` ${currentStep === 1 && "w-0"} ${
+                    currentStep === 2 && "w-1/3"
+                  } ${currentStep === 3 && "w-4/6"} ${
+                    currentStep === 4 && "w-full"
+                  }  h-full bg-slate-500`}
+                ></div>
+              </div>
+              <div className="grid grid-cols-4 gap-2 ">
                 <button
-                  aria-controls="info"
                   type="button"
-                  className="before:w-3.4 before:h-3.4 before:rounded-circle before:scale-120 rounded-0 -indent-330 relative m-0 cursor-pointer border-none bg-transparent px-1.5 pb-0.5 pt-5 text-slate-700 outline-none transition-all ease-linear before:absolute before:top-0 before:left-1/2 before:z-30 before:box-border before:block before:-translate-x-1/2 before:border-2 before:border-solid before:border-current before:bg-current before:transition-all before:ease-linear before:content-[''] sm:indent-0"
-                  title="Product Info"
+                  className={`${
+                    completed.info ? "text-slate-700 " : " text-slate-200"
+                  } font-semibold  relative step-button ${
+                    currentStep === 1 ? "text-slate-700 " : ""
+                  }  `}
                   onClick={() => setCurrentStep(1)}
                 >
-                  <span className="text-slate-400">1. Product Info</span>
+                  <div
+                    className={`absolute bg-slate-700 
+                        -top-5  right-2/4 w-3 h-3  rounded-full `}
+                  ></div>{" "}
+                  1. Product Info
                 </button>
+
                 <button
-                  aria-controls="media"
                   type="button"
-                  className="before:w-3.4 before:h-3.4 before:rounded-circle after:top-1.25 rounded-0 -indent-330 relative m-0 cursor-pointer border-none bg-transparent px-1.5 pb-0.5 pt-5 text-slate-100 outline-none transition-all ease-linear before:absolute before:top-0 before:left-1/2 before:z-30 before:box-border before:block before:-translate-x-1/2 before:border-2 before:border-solid before:border-current before:bg-white before:transition-all before:ease-linear before:content-[''] after:absolute after:left-[calc(-50%-13px/2)] after:z-10 after:block after:h-0.5 after:w-full after:bg-current after:transition-all after:ease-linear after:content-[''] sm:indent-0"
-                  title="Media"
+                  className={ `${
+                    completed.media ? "text-slate-700 " : "text-slate-200"
+                  } relative  font-semibold  step-button ${
+                    currentStep === 2 ? "text-slate-400 font-semibold" : ""
+                  }  `}
                   onClick={() => setCurrentStep(2)}
                 >
+                  <div
+                    className={`absolute ${
+                      currentStep === 2 || currentStep == 3 || currentStep == 4
+                        ? "bg-slate-700 "
+                        : "bg-slate-200"
+                    } -top-5  right-2/4 w-3 h-3  rounded-full `}
+                  ></div>{" "}
                   2. Media
                 </button>
                 <button
-                  aria-controls="socials"
                   type="button"
-                  className="before:w-3.4 before:h-3.4 before:rounded-circle after:top-1.25 rounded-0 -indent-330 relative m-0 cursor-pointer border-none bg-transparent px-1.5 pb-0.5 pt-5 text-slate-100 outline-none transition-all ease-linear before:absolute before:top-0 before:left-1/2 before:z-30 before:box-border before:block before:-translate-x-1/2 before:border-2 before:border-solid before:border-current before:bg-white before:transition-all before:ease-linear before:content-[''] after:absolute after:left-[calc(-50%-13px/2)] after:z-10 after:block after:h-0.5 after:w-full after:bg-current after:transition-all after:ease-linear after:content-[''] sm:indent-0"
-                  title="Socials"
+                  className={`${
+                    completed.social ? "text-black" : ""
+                  } relative step-button text-slate-200 font-semibold ${
+                    currentStep === 3 ? "text-slate-700 font-semibold" : ""
+                  }  `}
                   onClick={() => setCurrentStep(3)}
                 >
-                  3. Socials
+                  3. Social{" "}
+                  <div
+                    className={`absolute ${
+                      currentStep === 3 || currentStep == 4
+                        ? "bg-slate-700 "
+                        : "bg-slate-200"
+                    } -top-5  right-2/4 w-3 h-3  rounded-full `}
+                  ></div>
                 </button>
                 <button
-                  aria-controls="pricing"
                   type="button"
-                  className="before:w-3.4 before:h-3.4 before:rounded-circle after:top-1.25 rounded-0 -indent-330 relative m-0 cursor-pointer border-none bg-transparent px-1.5 pb-0.5 pt-5 text-slate-100 outline-none transition-all ease-linear before:absolute before:top-0 before:left-1/2 before:z-30 before:box-border before:block before:-translate-x-1/2 before:border-2 before:border-solid before:border-current before:bg-white before:transition-all before:ease-linear before:content-[''] after:absolute after:left-[calc(-50%-13px/2)] after:z-10 after:block after:h-0.5 after:w-full after:bg-current after:transition-all after:ease-linear after:content-[''] sm:indent-0"
-                  title="Pricing"
+                  className={`${
+                    completed.pricing ? "text-green-600  " : ""
+                  } relative step-button text-slate-200 font-semibold ${
+                    currentStep === 4 ? "text-black font-semibold" : ""
+                  }  `}
                   onClick={() => setCurrentStep(4)}
                 >
-                  4. Pricing
+                  4. Pricing{" "}
+                  <div
+                    className={`absolute ${
+                      currentStep == 4 ? "bg-black " : "bg-gray-300"
+                    } -top-5 left-2/4 w-3 h-3  rounded-full `}
+                  ></div>
                 </button>
               </div>
             </div>
@@ -65,34 +141,66 @@ function ProductForm() {
 
           <div className="flex flex-wrap -mx-3">
             <div className="w-full max-w-full px-3 m-auto flex-0 lg:w-8/12">
-              <form className="relative mb-32">
+              <form
+                className="relative mb-32"
+                onSubmit={handleSubmit(onSubmit)}
+              >
+                {/* Step 1: Product Info */}
                 <div
                   className={`form-step ${
                     currentStep === 1 ? "visible" : "hidden"
                   }`}
                 >
-                  <ProductInfo onContinue={handleNext} />
+                  <ProductInfo
+                    register={register}
+                    errors={errors}
+                    onContinue={handleNext}
+                    watch={watch}
+                  />
                 </div>
+
+                {/* Step 2: Media */}
                 <div
                   className={`form-step ${
                     currentStep === 2 ? "visible" : "hidden"
                   }`}
                 >
-                  <Media onContinue={handleNext} onBack={handlePrev} />
+                  <Media
+                    errors={errors}
+                    onContinue={handleNext}
+                    onBack={handlePrev}
+                    watch={watch}
+                    control={control}
+                  />
                 </div>
+
+                {/* Step 3: Social */}
                 <div
                   className={`form-step ${
                     currentStep === 3 ? "visible" : "hidden"
                   }`}
                 >
-                  <Social onContinue={handleNext} onBack={handlePrev} />
+                  <Social
+                    register={register}
+                    errors={errors}
+                    onContinue={handleNext}
+                    onBack={handlePrev}
+                    watch={watch}
+                  />
                 </div>
+
+                {/* Step 4: Pricing */}
                 <div
                   className={`form-step ${
                     currentStep === 4 ? "visible" : "hidden"
                   }`}
                 >
-                  <Pricing onBack={handlePrev} />
+                  <Pricing
+                    register={register}
+                    errors={errors}
+                    onBack={handlePrev}
+                    onSubmit={handleSubmit(onSubmit)} // Pass the submit handler to Pricing
+                  />
                 </div>
               </form>
             </div>
