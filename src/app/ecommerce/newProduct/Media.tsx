@@ -8,20 +8,16 @@ interface MediaProps {
   onBack: () => void;
   control: any; // Coming from React Hook Form for controlling the input
   errors: any;
-  watch: any;
+  watch?: any;
 }
 
-function Media({ onContinue, onBack, control, errors, watch }: MediaProps) {
-
-  const [selectedImage, setSelectedImage] = useState<string | null>(null); // State to store selected image
-  
+function Media({ onContinue, onBack, control, errors }: MediaProps) {
   const [files, setFiles] = useState([]);
 
   // Handle files dropped into the drop zone
   const handleDrop = (e: any) => {
     e.preventDefault();
     const droppedFiles = e.dataTransfer.files?.[0];
-    console.log(droppedFiles)
     if (droppedFiles) {
       setFiles([...files, URL.createObjectURL(droppedFiles)]);
     }
@@ -35,7 +31,6 @@ function Media({ onContinue, onBack, control, errors, watch }: MediaProps) {
   // Handle file selection via the input
   const handleFileChange = (e: any) => {
     const selectedFiles = e.target.files?.[0];
-    console.log(e.target.files)
     if (selectedFiles) {
       setFiles([...files, URL.createObjectURL(selectedFiles)]);
     }
@@ -53,7 +48,6 @@ function Media({ onContinue, onBack, control, errors, watch }: MediaProps) {
   const handleOnContinue = () => {
     onContinue();
   };
-
 
   // Disable the next button if no image is selected
   const isButtonDisabled = !files || files.length === 0;
@@ -91,8 +85,14 @@ function Media({ onContinue, onBack, control, errors, watch }: MediaProps) {
                   type="file"
                   className="hidden"
                   multiple
-                    accept="image/*"
-                  onChange={handleFileChange}
+                  accept="image/*"
+                  onChange={(e) => {
+                    if(files.length<4){
+
+                      handleFileChange(e);
+                    }
+                    onChange(e.target.files);
+                  }}
                 />
               )}
             />
@@ -103,51 +103,18 @@ function Media({ onContinue, onBack, control, errors, watch }: MediaProps) {
           </div>
         </div>
 
-        {/* <Controller
-          name="ProductImage"
-          control={control}
-          rules={{ required: "Product image is required" }}
-          render={({ field: { onChange } }) => (
-            <input
-              id="file-input"
-              type="file"
-              className="hidden"
-              multiple
-              accept="image/*"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) {
-                  setSelectedImage(URL.createObjectURL(file)); // Display the selected image
-                }
-                onChange(e.target.files); // Use React Hook Form's onChange
-              }}
-            />
-          )}
-        /> */}
-
-        {/* Display selected files */}
-        {/* {files.length > 0 && (
-        <div className="mt-4">
-          <h4 className="font-medium text-gray-700">Selected Files:</h4>
-          <ul className="list-disc pl-5 mt-2 text-gray-600">
-            {Array.from(files).map((file, index) => (
-              <li key={index}>{file.name}</li>
-            ))}
-          </ul>
-        </div>
-      )} */}
-
 
         {/* Image Preview */}
         {
-          <div className="flex flex-wrap mt-4 -mx-3 h-40">
-            <div className="w-full max-w-full px-3 flex-0 h-40  flex flex-wrap gap-5">
+          <div className="flex flex-wrap mt-4 -mx-3 h-32">
+            <div className="w-full max-w-full px-12 flex-0 h-32  flex flex-wrap gap-8">
               {files.map((url) => {
                 return (
                   <img
                     src={url}
                     alt="Selected Preview"
-                    className="max-w-full h-28 w-28 object-fit object-cover rounded-lg shadow-md"
+                    className="max-w-full h-28 w-32 object-fit object-cover rounded-lg shadow-md"
+
                   />
                 );
               })}

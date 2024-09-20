@@ -57,7 +57,7 @@ function ProductForm() {
         <div className="mb-12">
           <div className="flex flex-wrap -mx-3">
             <div className="w-full max-w-full px-3 mx-auto my-12  flex flex-col  justify-center items-center lg:w-8/12">
-              <div className="w-3/4  h-1  bg-gray-200  m-3 ">
+              <div className="w-3/4  h-1  bg-gray-200  m-3  ml-11 ">
                 <div
                   className={` ${currentStep === 1 && "w-0"} ${
                     currentStep === 2 && "w-1/3"
@@ -66,13 +66,13 @@ function ProductForm() {
                   }  h-full bg-slate-500`}
                 ></div>
               </div>
-              <div className="grid grid-cols-4 gap-2 ">
+              <div className=" w-full flex  justify-around">
                 <button
                   type="button"
-                  className={`${
-                    completed.info ? "text-slate-700 " : " text-slate-200"
-                  } font-semibold  relative step-button ${
-                    currentStep === 1 ? "text-slate-700 " : ""
+                  className={` ${
+                    completed.info ? "text-slate-700   " : " "
+                  }  relative step-button font-semibold ${
+                    currentStep === 1 ? "text-slate-700   " : ""
                   }  `}
                   onClick={() => setCurrentStep(1)}
                 >
@@ -86,9 +86,9 @@ function ProductForm() {
                 <button
                   type="button"
                   className={ `${
-                    completed.media ? "text-slate-700 " : "text-slate-200"
+                    completed.media ? "text-slate-700 " : ""
                   } relative  font-semibold  step-button ${
-                    currentStep === 2 ? "text-slate-400 font-semibold" : ""
+                    currentStep == 2 ? "text-slate-700 " : ""
                   }  `}
                   onClick={() => setCurrentStep(2)}
                 >
@@ -104,9 +104,9 @@ function ProductForm() {
                 <button
                   type="button"
                   className={`${
-                    completed.social ? "text-black" : ""
-                  } relative step-button text-slate-200 font-semibold ${
-                    currentStep === 3 ? "text-slate-700 font-semibold" : ""
+                    completed.social ? "text-slate-700" : ""
+                  } relative step-button font-semibold ${
+                    currentStep === 3 ? "text-slate-700" : ""
                   }  `}
                   onClick={() => setCurrentStep(3)}
                 >
@@ -122,16 +122,16 @@ function ProductForm() {
                 <button
                   type="button"
                   className={`${
-                    completed.pricing ? "text-green-600  " : ""
-                  } relative step-button text-slate-200 font-semibold ${
-                    currentStep === 4 ? "text-black font-semibold" : ""
+                    completed.pricing ? "text-slate-700  " : ""
+                  } relative step-button font-semibold ${
+                    currentStep === 4 ? "text-slate-700" : ""
                   }  `}
                   onClick={() => setCurrentStep(4)}
                 >
                   4. Pricing{" "}
                   <div
                     className={`absolute ${
-                      currentStep == 4 ? "bg-black " : "bg-gray-300"
+                      currentStep == 4 ? "bg-slate-700 " : "bg-gray-300"
                     } -top-5 left-2/4 w-3 h-3  rounded-full `}
                   ></div>
                 </button>

@@ -17,6 +17,7 @@
     "prettier": "2.7.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
+    "react-hook-form": "^7.53.0",
     "react-router-dom": "^6.3.0",
     "tailwindcss": "^2.2.4",
     "tinymce": "^7.3.0"
