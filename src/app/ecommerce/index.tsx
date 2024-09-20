@@ -1,6 +1,9 @@
 import React from "react";
-import Product  from "./newProduct";
+// import Product  from "./newProduct";
+import AllProducts from "./productListing/AllProducts";
 
 export default () => {
-  return <Product></Product>;
+  // <Product></Product>
+
+  return <AllProducts/>
 };

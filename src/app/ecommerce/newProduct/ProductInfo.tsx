@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import "./editor-quill.css";
 import "./choices.css";
+import Editor from "./Editor";
+
 
 interface ProductInfoProp {
   onContinue?: () => void;
-
+  control: any;
   register: any;
   errors: any;
   watch: any; // This will allow us to observe field values
 }
 
-function ProductInfo({ onContinue, register, errors, watch }: ProductInfoProp) {
+function ProductInfo({ onContinue, register ,control, errors, watch }: ProductInfoProp) {
   // Watch all required fields
   const productName = watch("ProductName");
   const weight = watch("Weight");
@@ -81,10 +83,12 @@ function ProductInfo({ onContinue, register, errors, watch }: ProductInfoProp) {
               Description<small> (optional)</small>
             </label>
             <div id="editor" className="editor-quill !h-1/2">
-            <textarea name="description" id="description" placeholder="Write some text here...."  className=" h-32 resize-none focus:shadow-soft-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none"></textarea>
+            {/* <textarea name="description" id="description" placeholder="Write some text here...."  className=" h-32 resize-none focus:shadow-soft-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none"></textarea> */}
+            <Editor control={control} />
           
             </div>
           </div>
+
           <div className="w-full max-w-full px-3 flex flex-col gap-5 sm:mt-0 sm:w-6/12">
             <div className="w-full max-w-full flex flex-col sm:mt-0 sm:w-full">
               <label

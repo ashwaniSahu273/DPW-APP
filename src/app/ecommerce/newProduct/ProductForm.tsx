@@ -156,6 +156,7 @@ function ProductForm() {
                     errors={errors}
                     onContinue={handleNext}
                     watch={watch}
+                    control={control}
                   />
                 </div>
 
